@@ -1,0 +1,17 @@
+{
+  "name": "settings-service",
+  "version": "0.1.0",
+  "description": "Service for storing settings and other user specific data",
+  "main": "./src/Main.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "Commun.com",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "cyberway-core-service": "^3.54.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
+}

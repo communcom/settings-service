@@ -1,0 +1,55 @@
+version: '2.1'
+services:
+  settings-mongo:
+    container_name: settings-mongo
+    image: mongo
+    restart: always
+    healthcheck:
+      test: mongo --eval 'db.getCollectionNames()'
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - mongodb_vol:/data/db
+    ports:
+      - 127.0.0.1:27017:27017
+    networks:
+      - services-tier
+
+  mongodb-exporter:
+    container_name: mongodb-exporter
+    image: cyberway/mongodb-exporter:v0.6.2
+    restart: always
+    depends_on:
+      settings-mongo:
+        condition: service_healthy
+    ports:
+      - 9216:9216
+    environment:
+      - MONGODB_URI=mongodb://settings-mongo:27017
+      - HTTP_AUTH=${MONGODB_EXPORTER_USER:?Can't start without auth variable MONGODB_EXPORTER_USER}:${MONGODB_EXPORTER_PASS:?Can't start without auth variable MONGODB_EXPORTER_PASS}
+    networks:
+      - services-tier
+
+  settings-node:
+    container_name: settings-node
+    restart: always
+    depends_on:
+      settings-mongo:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - services-tier
+    ports:
+      - $GLS_CONNECTOR_HOST:$GLS_CONNECTOR_PORT:$GLS_CONNECTOR_PORT
+      - $GLS_METRICS_HOST:$GLS_METRICS_PORT:$GLS_METRICS_PORT
+    env_file:
+      - .env
+
+volumes:
+  mongodb_vol:
+
+networks:
+  services-tier:
