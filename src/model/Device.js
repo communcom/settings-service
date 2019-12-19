@@ -2,7 +2,7 @@ const core = require('cyberway-core-service');
 const MongoDB = core.services.MongoDB;
 
 module.exports = MongoDB.makeModel(
-    'Option',
+    'Device',
     {
         deviceId: {
             type: String,
