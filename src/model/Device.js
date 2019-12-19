@@ -2,22 +2,30 @@ const core = require('cyberway-core-service');
 const MongoDB = core.services.MongoDB;
 
 module.exports = MongoDB.makeModel(
-    'Favorite',
+    'Option',
     {
+        deviceId: {
+            type: String,
+            required: true,
+        },
         userId: {
             type: String,
             required: true,
         },
-        list: {
-            type: [String],
-            default: [],
+        timeZoneOffset: {
+            type: Number,
+            default: null,
+        },
+        fcmToken: {
+            type: String,
+            default: null,
         },
     },
     {
         index: [
             {
                 fields: {
-                    userId: 1,
+                    deviceId: 1,
                 },
                 options: {
                     unique: true,
