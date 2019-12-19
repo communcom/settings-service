@@ -59,6 +59,25 @@ class Device {
             }
         );
     }
+
+    async getUserFcmTokens({ userId }) {
+        const devices = await DeviceModel.find(
+            {
+                userId,
+                fcmToken: { $ne: null },
+                timeZoneOffset: { $ne: null },
+            },
+            {
+                _id: false,
+                fcmToken: true,
+                timeZoneOffset: true,
+            }
+        );
+
+        return {
+            tokens: devices,
+        };
+    }
 }
 
 function extractFullDeviceId({ platform, deviceId }) {

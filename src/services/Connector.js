@@ -62,6 +62,12 @@ class Connector extends BasicConnector {
                     scope: this._device,
                     validation: {},
                 },
+                getUserFcmTokens: {
+                    handler: this._device.getUserFcmTokens,
+                    scope: this._device,
+                    inherits: ['userId'],
+                    validation: {},
+                },
             },
             serverDefaults: {
                 parents: {
