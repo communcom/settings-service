@@ -2,12 +2,14 @@ const core = require('cyberway-core-service');
 const { Connector: BasicConnector } = core.services;
 
 const Options = require('../controllers/Options');
+const Device = require('../controllers/Device');
 
 class Connector extends BasicConnector {
     constructor() {
         super();
 
         this._options = new Options();
+        this._device = new Device();
     }
 
     async start() {
@@ -31,6 +33,34 @@ class Connector extends BasicConnector {
                             },
                         },
                     },
+                },
+                setDeviceInfo: {
+                    handler: this._device.setDeviceInfo,
+                    scope: this._device,
+                    validation: {
+                        properties: {
+                            timeZoneOffset: {
+                                type: 'number',
+                            },
+                        },
+                    },
+                },
+                setFcmToken: {
+                    handler: this._device.setFcmToken,
+                    scope: this._device,
+                    validation: {
+                        required: ['fcmToken'],
+                        properties: {
+                            fcmToken: {
+                                type: 'string',
+                            },
+                        },
+                    },
+                },
+                cancelFcmToken: {
+                    handler: this._device.cancelFcmToken,
+                    scope: this._device,
+                    validation: {},
                 },
             },
             serverDefaults: {
