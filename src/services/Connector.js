@@ -57,8 +57,8 @@ class Connector extends BasicConnector {
                         },
                     },
                 },
-                cancelFcmToken: {
-                    handler: this._device.cancelFcmToken,
+                resetFcmToken: {
+                    handler: this._device.resetFcmToken,
                     scope: this._device,
                     validation: {},
                 },

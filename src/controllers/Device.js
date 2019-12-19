@@ -44,7 +44,7 @@ class Device {
         );
     }
 
-    async cancelFcmToken({}, { userId }, clientInfo) {
+    async resetFcmToken({}, { userId }, clientInfo) {
         const deviceId = extractFullDeviceId(clientInfo);
 
         await DeviceModel.updateOne(
