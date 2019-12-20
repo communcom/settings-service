@@ -65,7 +65,6 @@ class Device {
             {
                 userId,
                 fcmToken: { $ne: null },
-                timeZoneOffset: { $ne: null },
             },
             {
                 _id: false,
