@@ -68,6 +68,34 @@ class Connector extends BasicConnector {
                     inherits: ['userId'],
                     validation: {},
                 },
+                setNotificationsSettings: {
+                    handler: this._options.setNotificationsSettings,
+                    scope: this._options,
+                    inherits: ['disable'],
+                    validation: {},
+                },
+                setPushSettings: {
+                    handler: this._options.setPushSettings,
+                    scope: this._options,
+                    inherits: ['disable'],
+                    validation: {},
+                },
+                getNotificationsSettings: {
+                    handler: this._options.getNotificationsSettings,
+                    scope: this._options,
+                    validation: {},
+                },
+                getPushSettings: {
+                    handler: this._options.getPushSettings,
+                    scope: this._options,
+                    validation: {},
+                },
+                getAllNotificationsSettings: {
+                    handler: this._options.getAllNotificationsSettings,
+                    scope: this._options,
+                    inherits: ['userId'],
+                    validation: {},
+                },
             },
             serverDefaults: {
                 parents: {
@@ -87,6 +115,19 @@ class Connector extends BasicConnector {
                             properties: {
                                 profile: {
                                     type: 'string',
+                                },
+                            },
+                        },
+                    },
+                    disable: {
+                        validation: {
+                            properties: {
+                                disable: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                        enum: ['all', 'mention', 'reply', 'subscribe', 'upvote'],
+                                    },
                                 },
                             },
                         },
