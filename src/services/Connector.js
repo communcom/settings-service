@@ -126,7 +126,7 @@ class Connector extends BasicConnector {
                                     type: 'array',
                                     items: {
                                         type: 'string',
-                                        enum: ['all', 'mention', 'reply', 'subscribe', 'upvote'],
+                                        enum: ['all', 'mention', 'reply', 'subscribe', 'upvote','transfer', 'reward'],
                                     },
                                 },
                             },
