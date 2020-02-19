@@ -4,3 +4,4 @@ db
 .vscode
 .env
 .npmrc
+docker-compose.yml
