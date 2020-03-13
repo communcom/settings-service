@@ -1,18 +1,18 @@
 const core = require('cyberway-core-service');
-const MongoDB = core.services.MongoDB;
+const { MongoDB } = core.services;
 
 module.exports = MongoDB.makeModel(
-    'Option',
+    'User',
     {
         userId: {
             type: String,
             required: true,
         },
-        profile: {
-            type: String,
-            required: true,
+        system: {
+            type: Object,
+            default: {},
         },
-        options: {
+        user: {
             type: Object,
             default: {},
         },
@@ -22,7 +22,6 @@ module.exports = MongoDB.makeModel(
             {
                 fields: {
                     userId: 1,
-                    profile: 1,
                 },
                 options: {
                     unique: true,

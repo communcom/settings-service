@@ -1,39 +1,22 @@
 const core = require('cyberway-core-service');
 const { Connector: BasicConnector } = core.services;
 
-const Options = require('../controllers/Options');
 const Device = require('../controllers/Device');
+const Settings = require('../controllers/Settings');
+const Notifications = require('../controllers/Notifications');
 
 class Connector extends BasicConnector {
     constructor() {
         super();
 
-        this._options = new Options();
         this._device = new Device();
+        this._settings = new Settings();
+        this._notifications = new Notifications();
     }
 
     async start() {
         await super.start({
             serverRoutes: {
-                get: {
-                    handler: this._options.get,
-                    scope: this._options,
-                    inherits: ['userId', 'profile'],
-                    validation: {},
-                },
-                set: {
-                    handler: this._options.set,
-                    scope: this._options,
-                    inherits: ['userId', 'profile'],
-                    validation: {
-                        required: ['data'],
-                        properties: {
-                            data: {
-                                type: 'object',
-                            },
-                        },
-                    },
-                },
                 setDeviceInfo: {
                     handler: this._device.setDeviceInfo,
                     scope: this._device,
@@ -69,32 +52,76 @@ class Connector extends BasicConnector {
                     validation: {},
                 },
                 setNotificationsSettings: {
-                    handler: this._options.setNotificationsSettings,
-                    scope: this._options,
+                    handler: this._notifications.setNotificationsSettings,
+                    scope: this._notifications,
                     inherits: ['disable'],
                     validation: {},
                 },
                 setPushSettings: {
-                    handler: this._options.setPushSettings,
-                    scope: this._options,
+                    handler: this._notifications.setPushSettings,
+                    scope: this._notifications,
                     inherits: ['disable'],
                     validation: {},
                 },
                 getNotificationsSettings: {
-                    handler: this._options.getNotificationsSettings,
-                    scope: this._options,
+                    handler: this._notifications.getNotificationsSettings,
+                    scope: this._notifications,
                     validation: {},
                 },
                 getPushSettings: {
-                    handler: this._options.getPushSettings,
-                    scope: this._options,
+                    handler: this._notifications.getPushSettings,
+                    scope: this._notifications,
                     validation: {},
                 },
                 getAllNotificationsSettings: {
-                    handler: this._options.getAllNotificationsSettings,
-                    scope: this._options,
+                    handler: this._notifications.getAllNotificationsSettings,
+                    scope: this._notifications,
                     inherits: ['userId'],
                     validation: {},
+                },
+                setUserSystemSettings: {
+                    handler: this._settings.setUserSystemSettings,
+                    scope: this._settings,
+                    inherits: ['userId'],
+                    validation: {
+                        properties: {
+                            params: {
+                                type: 'object',
+                            },
+                            addToSet: {
+                                type: 'object',
+                            },
+                        },
+                    },
+                },
+                setUserSettings: {
+                    handler: this._settings.setUserSettings,
+                    scope: this._settings,
+                    validation: {
+                        properties: {
+                            params: {
+                                type: 'object',
+                            },
+                            addToSet: {
+                                type: 'object',
+                            },
+                        },
+                    },
+                },
+                getUserSettings: {
+                    handler: this._settings.getUserSettings,
+                    scope: this._settings,
+                    validation: {
+                        properties: {
+                            namespaces: {
+                                type: 'array',
+                                items: {
+                                    type: 'string',
+                                },
+                                default: ['system', 'user'],
+                            },
+                        },
+                    },
                 },
             },
             serverDefaults: {
