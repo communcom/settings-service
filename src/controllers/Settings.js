@@ -15,13 +15,13 @@ class Settings {
         };
         let someSelected = false;
 
-        for (const namespace of projection) {
+        for (const namespace of namespaces) {
             const path = namespace.split('.');
 
             if (path[0] !== 'system' && path[0] !== 'user') {
                 throw {
                     code: 400,
-                    message: 'invalid namespaces param',
+                    message: 'Invalid namespaces param',
                 };
             }
 
@@ -32,7 +32,7 @@ class Settings {
         if (!someSelected) {
             throw {
                 code: 400,
-                message: 'invalid namespaces param',
+                message: 'Invalid namespaces param',
             };
         }
 
