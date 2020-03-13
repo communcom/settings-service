@@ -84,9 +84,11 @@ class Connector extends BasicConnector {
                     scope: this._settings,
                     inherits: ['userId'],
                     validation: {
-                        required: ['params'],
                         properties: {
                             params: {
+                                type: 'object',
+                            },
+                            addToSet: {
                                 type: 'object',
                             },
                         },

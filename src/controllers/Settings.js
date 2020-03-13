@@ -59,29 +59,36 @@ class Settings {
         const updates = {};
         let isEmpty = true;
 
-        for (const [key, value] of Object.entries(params)) {
-            if (!updates.$set) {
-                updates.$set = {};
-            }
+        if (params) {
+            for (const [key, value] of Object.entries(params)) {
+                if (!updates.$set) {
+                    updates.$set = {};
+                }
 
-            updates.$set[`${namespace}.${key}`] = value;
-            isEmpty = false;
+                const path = `${namespace}.${key}`;
+                updates.$set[path] = value;
+                isEmpty = false;
+            }
         }
 
-        for (const [key, value] of Object.entries(addToSet)) {
-            if (!updates.$addToSet) {
-                updates.$addToSet = {};
-            }
+        if (addToSet) {
+            for (const [key, value] of Object.entries(addToSet)) {
+                if (!updates.$addToSet) {
+                    updates.$addToSet = {};
+                }
 
-            if (Array.isArray(value)) {
-                updates.$addToSet[key] = {
-                    $each: value,
-                };
-            } else {
-                updates.$addToSet[key] = value;
-            }
+                const path = `${namespace}.${key}`;
 
-            isEmpty = false;
+                if (Array.isArray(value)) {
+                    updates.$addToSet[path] = {
+                        $each: value,
+                    };
+                } else {
+                    updates.$addToSet[path] = value;
+                }
+
+                isEmpty = false;
+            }
         }
 
         if (isEmpty) {
