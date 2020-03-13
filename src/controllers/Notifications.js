@@ -1,33 +1,6 @@
-const OptionModel = require('../model/Option');
 const NotificationsSettings = require('../model/NotificationsSettings');
 
-class Options {
-    async get({ userId, profile }) {
-        const model = await OptionModel.findOne(
-            { userId, profile },
-            { options: true },
-            { lean: true }
-        );
-
-        if (!model || !model.options) {
-            return {};
-        }
-
-        return model.options;
-    }
-
-    async set({ userId, profile, data }) {
-        let model = await OptionModel.findOne({ userId, profile }, { options: true });
-
-        if (!model) {
-            model = new OptionModel({ userId, profile });
-        }
-
-        model.options = Object.assign({}, model.options, data);
-
-        await model.save();
-    }
-
+class Notifications {
     async setNotificationsSettings({ disable }, { userId }) {
         await NotificationsSettings.updateOne(
             { userId },
@@ -86,4 +59,4 @@ class Options {
     }
 }
 
-module.exports = Options;
+module.exports = Notifications;
