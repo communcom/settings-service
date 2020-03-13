@@ -36,7 +36,23 @@ class Settings {
             };
         }
 
-        return await UserModel.findOne({ userId }, projection, { lean: true });
+        const user = await UserModel.findOne({ userId }, projection, { lean: true });
+
+        if (!user) {
+            const emptyValue = {};
+
+            if (namespaces.includes('user')) {
+                emptyValue.user = {};
+            }
+
+            if (namespaces.includes('system')) {
+                emptyValue.system = {};
+            }
+
+            return emptyValue;
+        }
+
+        return user;
     }
 
     async _setSettings(userId, params, addToSet, namespace) {
