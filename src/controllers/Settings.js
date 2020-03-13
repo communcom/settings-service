@@ -1,12 +1,12 @@
 const UserModel = require('../model/User');
 
 class Settings {
-    async setUserSystemSettings({ userId, params }) {
-        return await this._setSettings(userId, params, 'system');
+    async setUserSystemSettings({ userId, params, addToSet }) {
+        return await this._setSettings(userId, params, addToSet, 'system');
     }
 
-    async setUserSettings({ userId, params }) {
-        return await this._setSettings(userId, params, 'user');
+    async setUserSettings({ userId, params, addToSet }) {
+        return await this._setSettings(userId, params, addToSet, 'user');
     }
 
     async getUserSettings({ namespaces }, { userId }) {
@@ -39,12 +39,32 @@ class Settings {
         return await UserModel.findOne({ userId }, projection, { lean: true });
     }
 
-    async _setSettings(userId, params, namespace) {
+    async _setSettings(userId, params, addToSet, namespace) {
         const updates = {};
         let isEmpty = true;
 
         for (const [key, value] of Object.entries(params)) {
-            updates[`${namespace}.${key}`] = value;
+            if (!updates.$set) {
+                updates.$set = {};
+            }
+
+            updates.$set[`${namespace}.${key}`] = value;
+            isEmpty = false;
+        }
+
+        for (const [key, value] of Object.entries(addToSet)) {
+            if (!updates.$addToSet) {
+                updates.$addToSet = {};
+            }
+
+            if (Array.isArray(value)) {
+                updates.$addToSet[key] = {
+                    $each: value,
+                };
+            } else {
+                updates.$addToSet[key] = value;
+            }
+
             isEmpty = false;
         }
 
@@ -59,9 +79,7 @@ class Settings {
             {
                 userId,
             },
-            {
-                $set: updates,
-            },
+            updates,
             {
                 upsert: true,
             }

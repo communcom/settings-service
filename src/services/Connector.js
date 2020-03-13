@@ -115,9 +115,11 @@ class Connector extends BasicConnector {
                     handler: this._settings.setUserSettings,
                     scope: this._settings,
                     validation: {
-                        required: ['params'],
                         properties: {
                             params: {
+                                type: 'object',
+                            },
+                            addToSet: {
                                 type: 'object',
                             },
                         },
