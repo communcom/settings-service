@@ -3,6 +3,7 @@ const { Connector: BasicConnector } = core.services;
 
 const Options = require('../controllers/Options');
 const Device = require('../controllers/Device');
+const Settings = require('../controllers/Settings');
 
 class Connector extends BasicConnector {
     constructor() {
@@ -10,6 +11,7 @@ class Connector extends BasicConnector {
 
         this._options = new Options();
         this._device = new Device();
+        this._settings = new Settings();
     }
 
     async start() {
@@ -95,6 +97,46 @@ class Connector extends BasicConnector {
                     scope: this._options,
                     inherits: ['userId'],
                     validation: {},
+                },
+                setUserSystemSettings: {
+                    handler: this._settings.setUserSystemSettings,
+                    scope: this._settings,
+                    inherits: ['userId'],
+                    validation: {
+                        required: ['params'],
+                        properties: {
+                            params: {
+                                type: 'object',
+                            },
+                        },
+                    },
+                },
+                setUserSettings: {
+                    handler: this._settings.setUserSettings,
+                    scope: this._settings,
+                    validation: {
+                        required: ['params'],
+                        properties: {
+                            params: {
+                                type: 'object',
+                            },
+                        },
+                    },
+                },
+                getUserSettings: {
+                    handler: this._settings.getUserSettings,
+                    scope: this._settings,
+                    validation: {
+                        properties: {
+                            namespaces: {
+                                type: 'array',
+                                items: {
+                                    type: 'string',
+                                },
+                                default: ['system', 'user'],
+                            },
+                        },
+                    },
                 },
             },
             serverDefaults: {
