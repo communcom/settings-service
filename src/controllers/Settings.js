@@ -5,7 +5,7 @@ class Settings {
         return await this._setSettings(userId, params, addToSet, 'system');
     }
 
-    async setUserSettings({ userId, params, addToSet }) {
+    async setUserSettings({ params, addToSet }, { userId }) {
         return await this._setSettings(userId, params, addToSet, 'user');
     }
 
