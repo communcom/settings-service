@@ -1,4 +1,5 @@
 const UserModel = require('../model/User');
+const { GLS_API_SECRET } = require('../data/env');
 
 class Settings {
     async setUserSystemSettings({ userId, params, addToSet }) {
@@ -9,7 +10,11 @@ class Settings {
         return await this._setSettings(userId, params, addToSet, 'user');
     }
 
-    async getUserSettings({ namespaces }, { userId }) {
+    async getUserSettings({ namespaces, userId: forceUserId, apiSecret }, { userId: authUserId }) {
+        let userId = authUserId;
+        if (apiSecret && apiSecret === GLS_API_SECRET) {
+            userId = forceUserId;
+        }
         const projection = {
             _id: false,
         };

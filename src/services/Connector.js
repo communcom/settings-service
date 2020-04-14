@@ -113,6 +113,12 @@ class Connector extends BasicConnector {
                     scope: this._settings,
                     validation: {
                         properties: {
+                            userId: {
+                                type: 'string',
+                            },
+                            apiSecret: {
+                                type: 'string'
+                            },
                             namespaces: {
                                 type: 'array',
                                 items: {
