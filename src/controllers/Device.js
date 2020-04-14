@@ -69,6 +69,7 @@ class Device {
             {
                 _id: false,
                 fcmToken: true,
+                deviceId: true,
                 timeZoneOffset: true,
             }
         );
