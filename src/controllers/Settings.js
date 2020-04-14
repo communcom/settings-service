@@ -12,9 +12,23 @@ class Settings {
 
     async getUserSettings({ namespaces, userId: forceUserId, apiSecret }, { userId: authUserId }) {
         let userId = authUserId;
-        if (apiSecret && apiSecret === GLS_API_SECRET) {
+        if (apiSecret) {
+            if (apiSecret !== GLS_API_SECRET) {
+                throw {
+                    code: 1003,
+                    message: 'Secret is not valid',
+                };
+            }
             userId = forceUserId;
         }
+
+        if (!userId) {
+            throw {
+                code: 1004,
+                message: 'No userId provided',
+            };
+        }
+
         const projection = {
             _id: false,
         };
