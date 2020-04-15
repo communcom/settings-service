@@ -118,7 +118,7 @@ class Connector extends BasicConnector {
                             },
                             apiSecret: {
                                 type: 'string'
-                            },r
+                            },
                             namespaces: {
                                 type: 'array',
                                 items: {
