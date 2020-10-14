@@ -7,7 +7,7 @@
     "start": "node src/index.js"
   },
   "author": "Commun.com",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "dependencies": {
     "cyberway-core-service": "^3.55.6"
   },
